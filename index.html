@@ -71,20 +71,19 @@
 
             <!-- Grid Menu -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="menu-container">
-                <!-- Data Menu dengan Teks Lengkap -->
                 <script>
                     const menus = [
-                        {c:'paket', n:'Rice Bowl Spesial', img:'AgACAgUAAyEGAATk_963AAIBlGnd5YIDuDsjURr9JGgS8q3fxgoZAAIqDmsbfmvwVpmBZu5exEf6AQADAgADdwADOwQ', p:'Mulai 20k', d:'Nasi mangkuk praktis dengan aneka pilihan lauk yang menggugah selera.'},
-                        {c:'paket', n:'Paket Hemat', img:'AgACAgUAAyEGAATk_963AAIBmWnd5Y-QQgixKpN4G5zbd6veSnxEAAIwDmsbfmvwVgEwXhqW2rqYAQADAgADdwADOwQ', p:'Promo', d:'Kombinasi nasi dan lauk mengenyangkan dengan harga yang ramah di kantong.'},
-                        {c:'paket', n:'Paket Ayam Crispy', img:'AgACAgUAAyEGAATk_963AAIBqGnd6MhYMgzFlNhKjS9Oegbr9WADAAI1DmsbfmvwVvjWQV9B4VrwAQADAgADdwADOwQ', p:'Rekomendasi', d:'Ayam goreng renyah di luar, empuk di dalam, disajikan dengan saus spesial.'},
-                        {c:'paket', n:'Paket Varian Lain', img:'AgACAgUAAyEGAATk_963AAIBpWnd6MgJVC2A5ivEQrJOJXrMDlCUAAI0DmsbfmvwVuw1YujwP5vsAQADAgADdwADOwQ', p:'Paket Lengkap', d:'Beragam pilihan paket menarik lainnya untuk kepuasan makan Anda.'},
-                        {c:'lauk', n:'Ayam Ingkung Utuh', img:'AgACAgUAAyEGAATk_963AAIBlmnd5YYt-_gwyfrl5jYg80834rukAAIsDmsbfmvwVjoTJuFjMFEqAQADAgADdwADOwQ', p:'115k', d:'Ayam kampung utuh bumbu rempah Nusantara, cocok dinikmati bersama.'},
-                        {c:'lauk', n:'Aneka Lauk Pauk', img:'AgACAgUAAyEGAATk_963AAIBkmnd5YEwz5RgMQhvXhmejFJRuNLSAAIoDmsbfmvwVrZa-OiNT8dWAQADAgADdwADOwQ', p:'Tradisional', d:'Pilihan lauk rumahan yang kaya cita rasa rempah khas Indonesia.'},
-                        {c:'mie', n:'Aneka Olahan Mie', img:'AgACAgUAAyEGAATk_963AAIBlWnd5YIQx8SYXPoBFruc3TZDabA7AAIrDmsbfmvwVjAn-ZInkC18AQADAgADdwADOwQ', p:'Favorit', d:'Mie lezat dengan bumbu racikan rahasia Wasle Cafe.'},
-                        {c:'mie', n:'Menu Hidangan Spesial', img:'AgACAgUAAyEGAATk_963AAIBmmnd5ZhsSoChLDAbp9eBO0oPlZdWAAIxDmsbfmvwViD7k3eiqrgOAQADAgADdwADOwQ', p:'Eksklusif', d:'Berbagai hidangan spesial lainnya yang patut Anda coba.'},
-                        {c:'mie', n:'Aneka Menu Pilihan', img:'AgACAgUAAyEGAATk_963AAIBkWnd5YE4Lur2SSnRq12rSG8h9SSpAAInDmsbfmvwVgABT8-OBOLW0QEAAwIAA3cAAzsE', p:'Gurih', d:'Alternatif menu gurih yang siap menemani waktu santai Anda.'},
-                        {c:'minum', n:'Coffee & Non-Coffee', img:'AgACAgUAAyEGAATk_963AAIBkGnd5X1I_iXBUnEeUK4aGjW289_iAAImDmsbfmvwVplINKjjRU0SAQADAgADdwADOwQ', p:'Racikan', d:'Racikan kopi berkualitas dan minuman kekinian untuk kesegaran harimu.'},
-                        {c:'minum', n:'Aneka Minuman Segar', img:'AgACAgUAAyEGAATk_963AAIBjWnd5XxPCIOG_Y3-EGkOVDSU4CQKAAIjDmsbfmvwVk_KSLzr0zztAQADAgADdwADOwQ', p:'Segar', d:'Penghilang dahaga sempurna dengan sensasi rasa manis dan segar.'}
+                        {c:'paket', n:'Rice Bowl Spesial', img:'AgACAgUAAyEGAATk_963AAIBlGnd5YIDuDsjURr9JGgS8q3fxgoZAAIqDmsbfmvwVpmBZu5exEf6AQADAgADdwADOwQ', p:'Mulai 20k', d:'Praktis namun kaya rasa! Nasi hangat berpadu dengan aneka topping gurih yang siap memanjakan lidah Anda.'},
+                        {c:'paket', n:'Paket Nasi Hemat', img:'AgACAgUAAyEGAATk_963AAIBmWnd5Y-QQgixKpN4G5zbd6veSnxEAAIwDmsbfmvwVgEwXhqW2rqYAQADAgADdwADOwQ', p:'Promo', d:'Nikmat tak harus mahal. Kombinasi nasi dan lauk lezat mengenyangkan dengan harga yang sangat bersahabat.'},
+                        {c:'paket', n:'Ayam Crispy Wasle', img:'AgACAgUAAyEGAATk_963AAIBqGnd6MhYMgzFlNhKjS9Oegbr9WADAAI1DmsbfmvwVvjWQV9B4VrwAQADAgADdwADOwQ', p:'Rekomendasi', d:'Ayam goreng super renyah di luar, juicy di dalam. Disajikan hangat lengkap dengan saus andalan kami.'},
+                        {c:'paket', n:'Paket Komplit Lainnya', img:'AgACAgUAAyEGAATk_963AAIBpWnd6MgJVC2A5ivEQrJOJXrMDlCUAAI0DmsbfmvwVuw1YujwP5vsAQADAgADdwADOwQ', p:'Lengkap', d:'Sensasi rasa berbeda dalam satu piring. Berbagai pilihan paket lengkap untuk kepuasan bersantap maksimal.'},
+                        {c:'lauk', n:'Ayam Ingkung Utuh', img:'AgACAgUAAyEGAATk_963AAIBlmnd5YYt-_gwyfrl5jYg80834rukAAIsDmsbfmvwVjoTJuFjMFEqAQADAgADdwADOwQ', p:'115k', d:'Mahakarya rasa Nusantara! Ayam kampung utuh yang dimasak perlahan hingga bumbu rempahnya meresap sempurna.'},
+                        {c:'lauk', n:'Aneka Lauk Tradisional', img:'AgACAgUAAyEGAATk_963AAIBkmnd5YEwz5RgMQhvXhmejFJRuNLSAAIoDmsbfmvwVrZa-OiNT8dWAQADAgADdwADOwQ', p:'Tradisional', d:'Membawa kehangatan masakan rumah ke meja Anda. Pilihan lauk pauk yang kaya akan bumbu dan rempah autentik.'},
+                        {c:'mie', n:'Mie Racikan Wasle', img:'AgACAgUAAyEGAATk_963AAIBlWnd5YIQx8SYXPoBFruc3TZDabA7AAIrDmsbfmvwVjAn-ZInkC18AQADAgADdwADOwQ', p:'Favorit', d:'Sajian mie kenyal dengan bumbu rempah rahasia khas Wasle, disajikan hangat dan sangat menggugah selera.'},
+                        {c:'mie', n:'Hidangan Spesial Chef', img:'AgACAgUAAyEGAATk_963AAIBmmnd5ZhsSoChLDAbp9eBO0oPlZdWAAIxDmsbfmvwViD7k3eiqrgOAQADAgADdwADOwQ', p:'Eksklusif', d:'Eksplorasi rasa premium dari dapur kami. Cita rasa istimewa yang diciptakan khusus untuk pengalaman makan tak terlupakan.'},
+                        {c:'mie', n:'Camilan & Menu Gurih', img:'AgACAgUAAyEGAATk_963AAIBkWnd5YE4Lur2SSnRq12rSG8h9SSpAAInDmsbfmvwVgABT8-OBOLW0QEAAwIAA3cAAzsE', p:'Gurih', d:'Pilihan camilan renyah dan hidangan ringan yang menjadi pendamping paling sempurna untuk waktu nongkrong Anda.'},
+                        {c:'minum', n:'Artisan Coffee & Latte', img:'AgACAgUAAyEGAATk_963AAIBkGnd5X1I_iXBUnEeUK4aGjW289_iAAImDmsbfmvwVplINKjjRU0SAQADAgADdwADOwQ', p:'Racikan', d:'Dari biji kopi pilihan hingga racikan creamy kekinian, siap membangkitkan mood dan me-refresh hari Anda.'},
+                        {c:'minum', n:'Minuman Segar Dingin', img:'AgACAgUAAyEGAATk_963AAIBjWnd5XxPCIOG_Y3-EGkOVDSU4CQKAAIjDmsbfmvwVk_KSLzr0zztAQADAgADdwADOwQ', p:'Segar', d:'Kesegaran hakiki pelepas dahaga. Paduan rasa manis dan dingin yang meledak di mulut sejak tegukan pertama.'}
                     ];
                     
                     const container = document.getElementById('menu-container');
@@ -92,7 +91,7 @@
                         container.innerHTML += `
                         <div class="menu-item bg-white rounded-2xl shadow-md overflow-hidden group" data-category="${m.c}" data-aos="zoom-in" data-aos-delay="${(i%4)*100}">
                             <div class="relative aspect-[4/5] bg-gray-100 overflow-hidden">
-                                <img src="http://hostgambar.vercel.app/image/${m.img}" class="w-full h-full object-cover menu-img">
+                                <img src="http://hostgambar.vercel.app/image/${m.img}" class="w-full h-full object-cover menu-img" alt="${m.n}">
                                 <div class="menu-price-overlay absolute inset-0 flex items-end justify-center p-6 opacity-0">
                                     <span class="text-white text-2xl font-bold">${m.p}</span>
                                 </div>
@@ -115,19 +114,19 @@
             <div class="w-24 h-1 bg-mustard-500 mx-auto rounded mb-10"></div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div class="relative overflow-hidden rounded-xl shadow-sm aspect-square md:aspect-[4/5] group bg-gray-100">
-                    <img src="http://hostgambar.vercel.app/image/AgACAgUAAyEGAATk_963AAIBjGnd5XyrNjPnArSTbpOyzd3EUeebAAIiDmsbfmvwVu5HTC5t5wjQAQADAgADdwADOwQ" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                    <img src="http://hostgambar.vercel.app/image/AgACAgUAAyEGAATk_963AAIBjGnd5XyrNjPnArSTbpOyzd3EUeebAAIiDmsbfmvwVu5HTC5t5wjQAQADAgADdwADOwQ" class="w-full h-full object-cover transition duration-500 group-hover:scale-110" alt="Indoor">
                     <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
                         <span class="text-white font-serif text-2xl border-b-2 border-mustard-500 pb-1">Area Indoor</span>
                     </div>
                 </div>
                 <div class="relative overflow-hidden rounded-xl shadow-sm aspect-square md:aspect-[4/5] group bg-gray-100">
-                    <img src="http://hostgambar.vercel.app/image/AgACAgUAAyEGAATk_963AAIBk2nd5YEPQF3A9QuzgfrXYCcN7yWAAAIpDmsbfmvwVmqCvOb6MPFHAQADAgADdwADOwQ" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                    <img src="http://hostgambar.vercel.app/image/AgACAgUAAyEGAATk_963AAIBk2nd5YEPQF3A9QuzgfrXYCcN7yWAAAIpDmsbfmvwVmqCvOb6MPFHAQADAgADdwADOwQ" class="w-full h-full object-cover transition duration-500 group-hover:scale-110" alt="Sudut Nyaman">
                     <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
                         <span class="text-white font-serif text-2xl border-b-2 border-mustard-500 pb-1">Sudut Nyaman</span>
                     </div>
                 </div>
                 <div class="relative overflow-hidden rounded-xl shadow-sm aspect-square md:aspect-[4/5] group md:col-span-2 lg:col-span-1 bg-gray-100">
-                    <img src="http://hostgambar.vercel.app/image/AgACAgUAAyEGAATk_963AAIBl2nd5YYpx1b59kIeRAgAAXvqZ647DwACLQ5rG35r8Fbpur5H9ARKFQEAAwIAA3cAAzsE" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                    <img src="http://hostgambar.vercel.app/image/AgACAgUAAyEGAATk_963AAIBl2nd5YYpx1b59kIeRAgAAXvqZ647DwACLQ5rG35r8Fbpur5H9ARKFQEAAwIAA3cAAzsE" class="w-full h-full object-cover transition duration-500 group-hover:scale-110" alt="Trendi">
                     <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
                         <span class="text-white font-serif text-2xl border-b-2 border-mustard-500 pb-1">Desain Trendi</span>
                     </div>
@@ -224,4 +223,4 @@
         }
     </script>
 </body>
-                    </html>
+</html>
