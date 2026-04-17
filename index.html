@@ -4,36 +4,68 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wasle Cafe & Resto | Nyaman, Trendi & Elegan</title>
+    
+    <!-- Google Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        tailwind.config={theme:{extend:{colors:{maroon:{600:'#8B0000',700:'#6a0000'},mustard:{400:'#F4C430',500:'#E1AD01'},beige:{100:'#FCFBF4',200:'#F5F5DC'}},fontFamily:{sans:['Poppins','sans-serif'],serif:['Playfair Display','serif']}}}}
+        tailwind.config={
+            theme:{
+                extend:{
+                    colors:{maroon:{600:'#8B0000',700:'#6a0000'},mustard:{400:'#F4C430',500:'#E1AD01'},beige:{100:'#FCFBF4',200:'#F5F5DC'}},
+                    fontFamily:{sans:['Poppins','sans-serif'],serif:['Playfair Display','serif']}
+                }
+            }
+        }
     </script>
+    
     <style>
         .glass-nav { background: rgba(245, 245, 220, 0.95); backdrop-filter: blur(10px); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
         .menu-img { transition: transform 0.5s ease; }
         .group:hover .menu-img { transform: scale(1.08); }
-        .menu-price-overlay { background: linear-gradient(transparent, rgba(139,0,0,0.95)); transform: translateY(100%); transition: all 0.4s ease; }
-        .group:hover .menu-price-overlay { transform: translateY(0); opacity: 1; }
+        
+        /* Floating Button Animations */
         @keyframes pulse-wa { 0% { box-shadow: 0 0 0 0 rgba(37,211,102,0.7); } 70% { box-shadow: 0 0 0 15px transparent; } 100% { box-shadow: 0 0 0 0 transparent; } }
         .wa-float { animation: pulse-wa 2s infinite; }
+        @keyframes bounce-cart { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+        .cart-bounce { animation: bounce-cart 0.5s ease; }
+
+        /* Cart Sidebar Transitions */
+        .cart-sidebar { transform: translateX(100%); transition: transform 0.4s ease-in-out; }
+        .cart-sidebar.open { transform: translateX(0); }
+        .cart-overlay { opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+        .cart-overlay.open { opacity: 1; pointer-events: auto; }
+
+        /* Custom Scrollbar for Cart */
+        .custom-scroll::-webkit-scrollbar { width: 5px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #E1AD01; border-radius: 10px; }
     </style>
 </head>
-<body class="font-sans bg-beige-100 text-gray-800">
+<body class="font-sans bg-beige-100 text-gray-800 overflow-x-hidden">
 
     <!-- Navbar -->
-    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 py-4">
+    <nav id="navbar" class="fixed w-full z-40 transition-all duration-300 py-4">
         <div class="container mx-auto px-4 md:px-8 flex justify-between items-center">
-            <a href="#" class="font-serif text-2xl font-bold text-maroon-600"><i class="fa-solid fa-mug-hot"></i> Wasle</a>
+            <a href="#" class="font-serif text-2xl font-bold text-maroon-600 flex items-center gap-2">
+                <i class="fa-solid fa-mug-hot"></i> Wasle
+            </a>
             <div class="hidden md:flex gap-8">
                 <a href="#home" class="hover:text-maroon-600 font-medium transition">Beranda</a>
                 <a href="#menu" class="hover:text-maroon-600 font-medium transition">Menu</a>
                 <a href="#gallery" class="hover:text-maroon-600 font-medium transition">Galeri</a>
                 <a href="#reservasi" class="hover:text-maroon-600 font-medium transition">Reservasi</a>
             </div>
-            <div id="store-status" class="hidden md:block px-3 py-1 rounded-full text-xs font-semibold text-white bg-gray-500">Mengecek...</div>
+            <div class="flex items-center gap-4">
+                <div id="store-status" class="hidden md:block px-3 py-1 rounded-full text-xs font-semibold text-white bg-gray-500">Mengecek...</div>
+                <button onclick="toggleCart()" class="text-maroon-600 text-2xl relative md:hidden">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span id="mobile-cart-badge" class="absolute -top-2 -right-2 bg-mustard-500 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold shadow-md hidden">0</span>
+                </button>
+            </div>
         </div>
     </nav>
 
@@ -43,21 +75,21 @@
         <div class="relative z-10 text-center px-4" data-aos="fade-up">
             <p class="text-mustard-500 font-medium tracking-widest uppercase mb-2">Selamat Datang di</p>
             <h1 class="text-5xl md:text-7xl font-serif font-bold text-white mb-4">Wasle Cafe & Resto</h1>
-            <p class="text-beige-200 text-lg md:text-xl mb-8 max-w-2xl mx-auto font-light">Nikmati perpaduan rasa autentik dengan suasana yang nyaman, trendi, dan elegan. Tempat terbaik untuk setiap momen Anda di Grobogan.</p>
+            <p class="text-beige-200 text-lg md:text-xl mb-8 max-w-2xl mx-auto font-light">Nikmati perpaduan rasa autentik dengan suasana nyaman, trendi, dan elegan. Tempat terbaik untuk momen Anda di Grobogan.</p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="#menu" class="px-8 py-3 bg-maroon-600 text-white rounded-full font-medium hover:bg-maroon-700 transition">Lihat Menu</a>
-                <a href="#reservasi" class="px-8 py-3 border-2 border-mustard-500 text-mustard-500 rounded-full font-medium hover:bg-mustard-500 hover:text-white transition">Reservasi</a>
+                <a href="#menu" class="px-8 py-3 bg-maroon-600 text-white rounded-full font-medium hover:bg-maroon-700 transition">Pesan Sekarang</a>
+                <a href="#reservasi" class="px-8 py-3 border-2 border-mustard-500 text-mustard-500 rounded-full font-medium hover:bg-mustard-500 hover:text-white transition">Reservasi Meja</a>
             </div>
         </div>
     </section>
 
-    <!-- Menu -->
+    <!-- Menu (Pesanan Pintar) -->
     <section id="menu" class="py-20">
         <div class="container mx-auto px-4 md:px-8">
             <div class="text-center mb-10" data-aos="fade-up">
-                <h2 class="text-4xl font-serif font-bold text-maroon-600 mb-2">Menu Favorit Kami</h2>
+                <h2 class="text-4xl font-serif font-bold text-maroon-600 mb-2">Pesanan Pintar</h2>
                 <div class="w-24 h-1 bg-mustard-500 mx-auto rounded mb-4"></div>
-                <p class="text-gray-600 max-w-xl mx-auto">Jelajahi berbagai hidangan spesial kami, mulai dari lauk tradisional Nusantara hingga camilan dan kopi kekinian.</p>
+                <p class="text-gray-600 max-w-xl mx-auto">Pilih menu favoritmu, masukkan ke keranjang, dan pesan langsung via WhatsApp dengan mudah!</p>
             </div>
 
             <!-- Tabs -->
@@ -65,49 +97,16 @@
                 <button onclick="filterMenu('all', this)" class="px-5 py-2 rounded-full border-2 border-maroon-600 bg-maroon-600 text-white font-medium transition">Semua</button>
                 <button onclick="filterMenu('paket', this)" class="px-5 py-2 rounded-full border-2 border-maroon-600 text-maroon-600 hover:bg-maroon-600 hover:text-white font-medium transition">Paket & Bowl</button>
                 <button onclick="filterMenu('lauk', this)" class="px-5 py-2 rounded-full border-2 border-maroon-600 text-maroon-600 hover:bg-maroon-600 hover:text-white font-medium transition">Lauk & Ayam</button>
-                <button onclick="filterMenu('mie', this)" class="px-5 py-2 rounded-full border-2 border-maroon-600 text-maroon-600 hover:bg-maroon-600 hover:text-white font-medium transition">Mie & Lainnya</button>
+                <button onclick="filterMenu('mie', this)" class="px-5 py-2 rounded-full border-2 border-maroon-600 text-maroon-600 hover:bg-maroon-600 hover:text-white font-medium transition">Mie & Snack</button>
                 <button onclick="filterMenu('minum', this)" class="px-5 py-2 rounded-full border-2 border-maroon-600 text-maroon-600 hover:bg-maroon-600 hover:text-white font-medium transition">Kopi & Minuman</button>
             </div>
 
-            <!-- Grid Menu -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="menu-container">
-                <script>
-                    const menus = [
-                        {c:'paket', n:'Rice Bowl Spesial', img:'AgACAgUAAyEGAATk_963AAIBlGnd5YIDuDsjURr9JGgS8q3fxgoZAAIqDmsbfmvwVpmBZu5exEf6AQADAgADdwADOwQ', p:'Mulai 20k', d:'Praktis namun kaya rasa! Nasi hangat berpadu dengan aneka topping gurih yang siap memanjakan lidah Anda.'},
-                        {c:'paket', n:'Paket Nasi Hemat', img:'AgACAgUAAyEGAATk_963AAIBmWnd5Y-QQgixKpN4G5zbd6veSnxEAAIwDmsbfmvwVgEwXhqW2rqYAQADAgADdwADOwQ', p:'Promo', d:'Nikmat tak harus mahal. Kombinasi nasi dan lauk lezat mengenyangkan dengan harga yang sangat bersahabat.'},
-                        {c:'paket', n:'Ayam Crispy Wasle', img:'AgACAgUAAyEGAATk_963AAIBqGnd6MhYMgzFlNhKjS9Oegbr9WADAAI1DmsbfmvwVvjWQV9B4VrwAQADAgADdwADOwQ', p:'Rekomendasi', d:'Ayam goreng super renyah di luar, juicy di dalam. Disajikan hangat lengkap dengan saus andalan kami.'},
-                        {c:'paket', n:'Paket Komplit Lainnya', img:'AgACAgUAAyEGAATk_963AAIBpWnd6MgJVC2A5ivEQrJOJXrMDlCUAAI0DmsbfmvwVuw1YujwP5vsAQADAgADdwADOwQ', p:'Lengkap', d:'Sensasi rasa berbeda dalam satu piring. Berbagai pilihan paket lengkap untuk kepuasan bersantap maksimal.'},
-                        {c:'lauk', n:'Ayam Ingkung Utuh', img:'AgACAgUAAyEGAATk_963AAIBlmnd5YYt-_gwyfrl5jYg80834rukAAIsDmsbfmvwVjoTJuFjMFEqAQADAgADdwADOwQ', p:'115k', d:'Mahakarya rasa Nusantara! Ayam kampung utuh yang dimasak perlahan hingga bumbu rempahnya meresap sempurna.'},
-                        {c:'lauk', n:'Aneka Lauk Tradisional', img:'AgACAgUAAyEGAATk_963AAIBkmnd5YEwz5RgMQhvXhmejFJRuNLSAAIoDmsbfmvwVrZa-OiNT8dWAQADAgADdwADOwQ', p:'Tradisional', d:'Membawa kehangatan masakan rumah ke meja Anda. Pilihan lauk pauk yang kaya akan bumbu dan rempah autentik.'},
-                        {c:'mie', n:'Mie Racikan Wasle', img:'AgACAgUAAyEGAATk_963AAIBlWnd5YIQx8SYXPoBFruc3TZDabA7AAIrDmsbfmvwVjAn-ZInkC18AQADAgADdwADOwQ', p:'Favorit', d:'Sajian mie kenyal dengan bumbu rempah rahasia khas Wasle, disajikan hangat dan sangat menggugah selera.'},
-                        {c:'mie', n:'Hidangan Spesial Chef', img:'AgACAgUAAyEGAATk_963AAIBmmnd5ZhsSoChLDAbp9eBO0oPlZdWAAIxDmsbfmvwViD7k3eiqrgOAQADAgADdwADOwQ', p:'Eksklusif', d:'Eksplorasi rasa premium dari dapur kami. Cita rasa istimewa yang diciptakan khusus untuk pengalaman makan tak terlupakan.'},
-                        {c:'mie', n:'Camilan & Menu Gurih', img:'AgACAgUAAyEGAATk_963AAIBkWnd5YE4Lur2SSnRq12rSG8h9SSpAAInDmsbfmvwVgABT8-OBOLW0QEAAwIAA3cAAzsE', p:'Gurih', d:'Pilihan camilan renyah dan hidangan ringan yang menjadi pendamping paling sempurna untuk waktu nongkrong Anda.'},
-                        {c:'minum', n:'Artisan Coffee & Latte', img:'AgACAgUAAyEGAATk_963AAIBkGnd5X1I_iXBUnEeUK4aGjW289_iAAImDmsbfmvwVplINKjjRU0SAQADAgADdwADOwQ', p:'Racikan', d:'Dari biji kopi pilihan hingga racikan creamy kekinian, siap membangkitkan mood dan me-refresh hari Anda.'},
-                        {c:'minum', n:'Minuman Segar Dingin', img:'AgACAgUAAyEGAATk_963AAIBjWnd5XxPCIOG_Y3-EGkOVDSU4CQKAAIjDmsbfmvwVk_KSLzr0zztAQADAgADdwADOwQ', p:'Segar', d:'Kesegaran hakiki pelepas dahaga. Paduan rasa manis dan dingin yang meledak di mulut sejak tegukan pertama.'}
-                    ];
-                    
-                    const container = document.getElementById('menu-container');
-                    menus.forEach((m, i) => {
-                        container.innerHTML += `
-                        <div class="menu-item bg-white rounded-2xl shadow-md overflow-hidden group" data-category="${m.c}" data-aos="zoom-in" data-aos-delay="${(i%4)*100}">
-                            <div class="relative aspect-[4/5] bg-gray-100 overflow-hidden">
-                                <img src="http://hostgambar.vercel.app/image/${m.img}" class="w-full h-full object-cover menu-img" alt="${m.n}">
-                                <div class="menu-price-overlay absolute inset-0 flex items-end justify-center p-6 opacity-0">
-                                    <span class="text-white text-2xl font-bold">${m.p}</span>
-                                </div>
-                            </div>
-                            <div class="p-5">
-                                <h3 class="text-xl font-serif font-bold text-maroon-600 mb-1">${m.n}</h3>
-                                <p class="text-gray-500 text-sm leading-relaxed">${m.d}</p>
-                            </div>
-                        </div>`;
-                    });
-                </script>
-            </div>
+            <!-- Grid Menu Dinamis -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="menu-container"></div>
         </div>
     </section>
 
-    <!-- Gallery -->
+    <!-- Galeri Suasana -->
     <section id="gallery" class="py-20 bg-white">
         <div class="container mx-auto px-4 md:px-8 text-center" data-aos="fade-up">
             <h2 class="text-4xl font-serif font-bold text-maroon-600 mb-2">Suasana Resto</h2>
@@ -120,7 +119,7 @@
                     </div>
                 </div>
                 <div class="relative overflow-hidden rounded-xl shadow-sm aspect-square md:aspect-[4/5] group bg-gray-100">
-                    <img src="http://hostgambar.vercel.app/image/AgACAgUAAyEGAATk_963AAIBk2nd5YEPQF3A9QuzgfrXYCcN7yWAAAIpDmsbfmvwVmqCvOb6MPFHAQADAgADdwADOwQ" class="w-full h-full object-cover transition duration-500 group-hover:scale-110" alt="Sudut Nyaman">
+                    <img src="http://hostgambar.vercel.app/image/AgACAgUAAyEGAATk_963AAIBk2nd5YEPQF3A9QuzgfrXYCcN7yWAAAIpDmsbfmvwVmqCvOb6MPFHAQADAgADdwADOwQ" class="w-full h-full object-cover transition duration-500 group-hover:scale-110" alt="Nyaman">
                     <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
                         <span class="text-white font-serif text-2xl border-b-2 border-mustard-500 pb-1">Sudut Nyaman</span>
                     </div>
@@ -135,19 +134,19 @@
         </div>
     </section>
 
-    <!-- Reservasi -->
+    <!-- Reservasi Tempat -->
     <section id="reservasi" class="py-20 bg-beige-200">
         <div class="container mx-auto px-4 max-w-4xl bg-white rounded-3xl shadow-xl overflow-hidden flex flex-col md:flex-row" data-aos="fade-up">
             <div class="md:w-2/5 bg-maroon-600 text-white p-10 flex flex-col justify-center">
                 <h3 class="text-3xl font-serif font-bold mb-4">Pesan Meja Anda</h3>
-                <p class="font-light mb-8 opacity-90">Pastikan Anda mendapatkan tempat terbaik untuk momen spesial Anda bersama Wasle.</p>
+                <p class="font-light mb-8 opacity-90">Dapatkan tempat terbaik untuk momen spesial Anda bersama Wasle.</p>
                 <div class="space-y-4">
                     <p class="text-sm flex items-center"><i class="fa-solid fa-clock text-mustard-500 w-6"></i> Setiap Hari: 09.00 - 21.00</p>
                     <p class="text-sm flex items-center"><i class="fa-solid fa-phone text-mustard-500 w-6"></i> 0855-8000-337</p>
                     <p class="text-sm flex items-start"><i class="fa-solid fa-location-dot text-mustard-500 w-6 mt-1"></i> <span>Kembangan, Tuko, Kec. Pulokulon, Kab. Grobogan.</span></p>
                 </div>
             </div>
-            <form onsubmit="kirimWA(event)" class="md:w-3/5 p-10 space-y-4">
+            <form onsubmit="kirimReservasiWA(event)" class="md:w-3/5 p-10 space-y-4">
                 <h3 class="text-2xl font-serif font-bold text-gray-800 mb-4">Form Reservasi</h3>
                 <input type="text" id="rNama" placeholder="Nama Lengkap" required class="w-full px-4 py-3 border rounded-lg outline-none focus:ring-2 focus:ring-maroon-600">
                 <div class="flex gap-4">
@@ -158,7 +157,9 @@
                     <option>2 Orang</option><option>3-4 Orang</option><option>5-8 Orang</option><option>Lebih dari 8 Orang</option>
                 </select>
                 <textarea id="rNotes" rows="2" placeholder="Catatan (Opsional)" class="w-full px-4 py-3 border rounded-lg outline-none focus:ring-2 focus:ring-maroon-600"></textarea>
-                <button type="submit" class="w-full bg-maroon-600 text-white font-bold py-3 rounded-lg hover:bg-maroon-700 transition transform hover:scale-[1.02] shadow-md"><i class="fa-brands fa-whatsapp text-lg mr-2"></i> Kirim via WhatsApp</button>
+                <button type="submit" class="w-full bg-maroon-600 text-white font-bold py-3 rounded-lg hover:bg-maroon-700 transition transform hover:scale-[1.02] shadow-md">
+                    <i class="fa-brands fa-whatsapp text-lg mr-2"></i> Reservasi via WhatsApp
+                </button>
             </form>
         </div>
     </section>
@@ -170,54 +171,266 @@
         <div class="flex justify-center space-x-4 mb-8">
             <a href="https://instagram.com/wasle.caferesto" target="_blank" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-300 hover:bg-mustard-500 hover:text-white transition"><i class="fa-brands fa-instagram"></i></a>
         </div>
-        <p class="text-sm text-gray-500">© 2024 Wasle Cafe & Resto. All rights reserved.</p>
+        <p class="text-sm text-gray-500">© <span id="current-year"></span> Wasle Cafe & Resto. All rights reserved.</p>
     </footer>
 
-    <!-- WA Float -->
-    <a href="https://wa.me/628558000337" target="_blank" class="fixed bottom-6 right-6 z-50 bg-[#25D366] text-white w-14 h-14 rounded-full flex items-center justify-center text-3xl shadow-xl hover:bg-[#20bd5a] transition wa-float">
-        <i class="fa-brands fa-whatsapp"></i>
-    </a>
+    <!-- Floating Buttons (WA & Cart) -->
+    <div class="fixed bottom-6 right-6 z-40 flex flex-col gap-4 items-end">
+        <!-- Floating Cart Button -->
+        <button onclick="toggleCart()" id="floating-cart" class="bg-mustard-500 text-white w-14 h-14 rounded-full flex items-center justify-center text-2xl shadow-xl hover:bg-mustard-400 transition relative">
+            <i class="fa-solid fa-basket-shopping"></i>
+            <span id="cart-badge" class="absolute -top-2 -left-2 bg-maroon-600 border-2 border-white text-white text-xs w-6 h-6 rounded-full flex items-center justify-center font-bold shadow-md hidden">0</span>
+        </button>
+        <!-- Floating WA Button -->
+        <a href="https://wa.me/628558000337" target="_blank" class="bg-[#25D366] text-white w-14 h-14 rounded-full flex items-center justify-center text-3xl shadow-xl hover:bg-[#20bd5a] transition wa-float">
+            <i class="fa-brands fa-whatsapp"></i>
+        </a>
+    </div>
+
+    <!-- CART SIDEBAR OVERLAY -->
+    <div id="cart-overlay" class="fixed inset-0 bg-black/50 z-50 cart-overlay" onclick="toggleCart()"></div>
+    
+    <!-- CART SIDEBAR PANEL -->
+    <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-full max-w-sm bg-white shadow-2xl z-50 flex flex-col cart-sidebar">
+        <!-- Header -->
+        <div class="p-5 border-b flex justify-between items-center bg-beige-100">
+            <h2 class="text-xl font-serif font-bold text-maroon-600"><i class="fa-solid fa-basket-shopping mr-2"></i> Keranjang Anda</h2>
+            <button onclick="toggleCart()" class="text-gray-500 hover:text-red-500 text-2xl"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        
+        <!-- Body (Items) -->
+        <div id="cart-items" class="flex-1 overflow-y-auto p-5 custom-scroll bg-white">
+            <div id="empty-cart-msg" class="text-center text-gray-400 mt-10">
+                <i class="fa-solid fa-cart-arrow-down text-5xl mb-4 opacity-30"></i>
+                <p>Keranjang masih kosong.<br>Yuk, pilih menu favoritmu!</p>
+            </div>
+            <div id="cart-list" class="space-y-4"></div>
+        </div>
+
+        <!-- Footer (Form & Checkout) -->
+        <div class="p-5 border-t bg-beige-100 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+            <!-- Form Pemesan -->
+            <form id="checkout-form" onsubmit="checkoutWA(event)" class="mb-4 hidden space-y-3">
+                <p class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Informasi Pemesan</p>
+                <div class="flex gap-2">
+                    <div class="relative w-2/3">
+                        <i class="fa-regular fa-user absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm"></i>
+                        <input type="text" id="cNama" placeholder="Nama Anda" required class="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:border-maroon-600 focus:ring-1 focus:ring-maroon-600 transition">
+                    </div>
+                    <div class="relative w-1/3">
+                        <i class="fa-solid fa-hashtag absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm"></i>
+                        <input type="text" id="cMeja" placeholder="No. Meja" required class="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:border-maroon-600 focus:ring-1 focus:ring-maroon-600 transition">
+                    </div>
+                </div>
+                <div class="relative">
+                    <i class="fa-regular fa-comment absolute left-3 top-3 text-gray-400 text-sm"></i>
+                    <textarea id="cCatatan" rows="1" placeholder="Catatan tambahan (Opsional)" class="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:border-maroon-600 focus:ring-1 focus:ring-maroon-600 transition custom-scroll"></textarea>
+                </div>
+                <hr class="border-gray-200 my-2">
+            </form>
+
+            <div class="flex justify-between items-center mb-4">
+                <span class="font-medium text-gray-600">Total Pembayaran:</span>
+                <span id="cart-total" class="font-bold text-xl text-maroon-600">Rp 0</span>
+            </div>
+            <!-- Tombol Checkout (Submit Form) -->
+            <button type="submit" form="checkout-form" id="btn-checkout" class="w-full bg-maroon-600 text-white font-bold py-3 rounded-xl hover:bg-maroon-700 transition flex justify-center items-center gap-2 opacity-50 cursor-not-allowed" disabled>
+                <i class="fa-brands fa-whatsapp text-xl"></i> Pesan Sekarang
+            </button>
+        </div>
+    </div>
 
     <!-- Scripts -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
+        // Init Animasi & Tahun
         AOS.init({ once: true, offset: 50 });
+        document.getElementById('current-year').textContent = new Date().getFullYear();
 
-        // Navbar Scroll
+        // Efek Scroll Navbar
         window.addEventListener('scroll', () => {
             const nav = document.getElementById('navbar');
             window.scrollY > 50 ? nav.classList.add('glass-nav', 'py-2') : nav.classList.remove('glass-nav', 'py-2');
         });
 
-        // Cek Jam Buka
+        // Jam Buka Real-time
         setInterval(() => {
             const h = new Date(new Date().getTime() + (new Date().getTimezoneOffset()*60000) + (3600000*7)).getHours();
             const badge = document.getElementById('store-status');
-            if(h >= 9 && h < 21) { badge.textContent = 'Buka Sekarang'; badge.className = 'hidden md:block px-3 py-1 rounded-full text-xs font-semibold text-white bg-green-600 transition-colors'; }
-            else { badge.textContent = 'Tutup (Buka 09.00)'; badge.className = 'hidden md:block px-3 py-1 rounded-full text-xs font-semibold text-white bg-red-600 transition-colors'; }
+            if(h >= 9 && h < 21) { badge.textContent = 'Buka Sekarang'; badge.className = 'hidden md:block px-3 py-1 rounded-full text-xs font-semibold text-white bg-green-600'; }
+            else { badge.textContent = 'Tutup (Buka 09.00)'; badge.className = 'hidden md:block px-3 py-1 rounded-full text-xs font-semibold text-white bg-red-600'; }
         }, 1000);
 
-        // Filter Menu
+        // DATA MENU 
+        const menus = [
+            {id:1, c:'paket', n:'Rice Bowl Spesial', img:'AgACAgUAAyEGAATk_963AAIBlGnd5YIDuDsjURr9JGgS8q3fxgoZAAIqDmsbfmvwVpmBZu5exEf6AQADAgADdwADOwQ', priceNum: 20000, d:'Praktis namun kaya rasa! Nasi hangat berpadu dengan aneka topping gurih.'},
+            {id:2, c:'paket', n:'Paket Nasi Hemat', img:'AgACAgUAAyEGAATk_963AAIBmWnd5Y-QQgixKpN4G5zbd6veSnxEAAIwDmsbfmvwVgEwXhqW2rqYAQADAgADdwADOwQ', priceNum: 22000, d:'Nikmat tak harus mahal. Kombinasi nasi dan lauk lezat dengan harga bersahabat.'},
+            {id:3, c:'paket', n:'Ayam Crispy Wasle', img:'AgACAgUAAyEGAATk_963AAIBqGnd6MhYMgzFlNhKjS9Oegbr9WADAAI1DmsbfmvwVvjWQV9B4VrwAQADAgADdwADOwQ', priceNum: 25000, d:'Ayam goreng renyah di luar, juicy di dalam. Disajikan hangat.'},
+            {id:4, c:'paket', n:'Paket Komplit Lainnya', img:'AgACAgUAAyEGAATk_963AAIBpWnd6MgJVC2A5ivEQrJOJXrMDlCUAAI0DmsbfmvwVuw1YujwP5vsAQADAgADdwADOwQ', priceNum: 30000, d:'Sensasi rasa berbeda dalam satu piring. Berbagai pilihan paket lengkap.'},
+            {id:5, c:'lauk', n:'Ayam Ingkung Utuh', img:'AgACAgUAAyEGAATk_963AAIBlmnd5YYt-_gwyfrl5jYg80834rukAAIsDmsbfmvwVjoTJuFjMFEqAQADAgADdwADOwQ', priceNum: 115000, d:'Mahakarya Nusantara! Ayam kampung dimasak perlahan hingga bumbu meresap.'},
+            {id:6, c:'lauk', n:'Aneka Lauk Tradisional', img:'AgACAgUAAyEGAATk_963AAIBkmnd5YEwz5RgMQhvXhmejFJRuNLSAAIoDmsbfmvwVrZa-OiNT8dWAQADAgADdwADOwQ', priceNum: 29000, d:'Pilihan lauk pauk rumah yang kaya akan bumbu dan rempah autentik.'},
+            {id:7, c:'mie', n:'Mie Racikan Wasle', img:'AgACAgUAAyEGAATk_963AAIBlWnd5YIQx8SYXPoBFruc3TZDabA7AAIrDmsbfmvwVjAn-ZInkC18AQADAgADdwADOwQ', priceNum: 25000, d:'Sajian mie kenyal dengan bumbu rempah rahasia, sangat menggugah selera.'},
+            {id:8, c:'mie', n:'Hidangan Spesial Chef', img:'AgACAgUAAyEGAATk_963AAIBmmnd5ZhsSoChLDAbp9eBO0oPlZdWAAIxDmsbfmvwViD7k3eiqrgOAQADAgADdwADOwQ', priceNum: 45000, d:'Eksplorasi rasa premium. Cita rasa istimewa untuk pengalaman tak terlupakan.'},
+            {id:9, c:'mie', n:'Camilan & Menu Gurih', img:'AgACAgUAAyEGAATk_963AAIBkWnd5YE4Lur2SSnRq12rSG8h9SSpAAInDmsbfmvwVgABT8-OBOLW0QEAAwIAA3cAAzsE', priceNum: 15000, d:'Pilihan camilan renyah dan ringan, pendamping sempurna waktu nongkrong.'},
+            {id:10, c:'minum', n:'Artisan Coffee & Latte', img:'AgACAgUAAyEGAATk_963AAIBkGnd5X1I_iXBUnEeUK4aGjW289_iAAImDmsbfmvwVplINKjjRU0SAQADAgADdwADOwQ', priceNum: 18000, d:'Racikan kopi pilihan dan creamy kekinian, membangkitkan mood Anda.'},
+            {id:11, c:'minum', n:'Minuman Segar Dingin', img:'AgACAgUAAyEGAATk_963AAIBjWnd5XxPCIOG_Y3-EGkOVDSU4CQKAAIjDmsbfmvwVk_KSLzr0zztAQADAgADdwADOwQ', priceNum: 15000, d:'Kesegaran hakiki pelepas dahaga. Paduan manis dingin yang menyegarkan.'}
+        ];
+
+        // Format Rupiah
+        const formatRp = (angka) => new Intl.NumberFormat('id-ID', {style: 'currency', currency: 'IDR', minimumFractionDigits: 0}).format(angka);
+
+        // Render Grid Menu
+        const container = document.getElementById('menu-container');
+        menus.forEach((m, i) => {
+            container.innerHTML += `
+            <div class="menu-item bg-white rounded-2xl shadow-md overflow-hidden group flex flex-col h-full relative" data-category="${m.c}" data-aos="zoom-in" data-aos-delay="${(i%4)*100}">
+                <div class="relative aspect-[4/5] bg-gray-100 overflow-hidden">
+                    <img src="http://hostgambar.vercel.app/image/${m.img}" class="w-full h-full object-cover menu-img" alt="${m.n}">
+                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <button onclick="addToCart(${m.id}, '${m.n}', ${m.priceNum}, '${m.img}')" class="bg-mustard-500 hover:bg-mustard-400 text-white px-5 py-2 rounded-full font-medium transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 shadow-lg flex items-center gap-2">
+                            <i class="fa-solid fa-plus"></i> Tambah
+                        </button>
+                    </div>
+                </div>
+                <div class="p-5 flex-1 flex flex-col">
+                    <div class="flex justify-between items-start mb-1">
+                        <h3 class="text-xl font-serif font-bold text-maroon-600 flex-1">${m.n}</h3>
+                    </div>
+                    <p class="font-semibold text-mustard-500 mb-2">${formatRp(m.priceNum)}</p>
+                    <p class="text-gray-500 text-sm leading-relaxed flex-1">${m.d}</p>
+                    <button onclick="addToCart(${m.id}, '${m.n}', ${m.priceNum}, '${m.img}')" class="w-full mt-4 bg-maroon-50 text-maroon-600 font-medium py-2 rounded-lg border border-maroon-100 hover:bg-maroon-600 hover:text-white transition lg:hidden">
+                        Tambah Pesanan
+                    </button>
+                </div>
+            </div>`;
+        });
+
+        // Filter Menu Logic
         function filterMenu(c, btn) {
-            document.querySelectorAll('#tabs button').forEach(b => { 
-                b.className = 'px-5 py-2 rounded-full border-2 border-maroon-600 text-maroon-600 hover:bg-maroon-600 hover:text-white font-medium transition'; 
-            });
+            document.querySelectorAll('#tabs button').forEach(b => b.className = 'px-5 py-2 rounded-full border-2 border-maroon-600 text-maroon-600 hover:bg-maroon-600 hover:text-white font-medium transition');
             btn.className = 'px-5 py-2 rounded-full border-2 border-maroon-600 bg-maroon-600 text-white font-medium transition';
-            
-            document.querySelectorAll('.menu-item').forEach(i => {
-                if (c === 'all' || i.dataset.category === c) {
-                    i.style.display = 'block';
-                } else {
-                    i.style.display = 'none';
-                }
-            });
+            document.querySelectorAll('.menu-item').forEach(i => i.style.display = (c === 'all' || i.dataset.category === c) ? 'flex' : 'none');
         }
 
-        // WA Redirect
-        function kirimWA(e) {
+        // --- SISTEM KERANJANG (SMART ORDERING) ---
+        let cart = [];
+
+        function addToCart(id, name, price, img) {
+            const existingItem = cart.find(item => item.id === id);
+            if (existingItem) { existingItem.qty += 1; } 
+            else { cart.push({ id, name, price, img, qty: 1 }); }
+            
+            updateCartUI();
+            
+            // Animasi Tombol Keranjang
+            const cartBtn = document.getElementById('floating-cart');
+            cartBtn.classList.remove('cart-bounce');
+            void cartBtn.offsetWidth; 
+            cartBtn.classList.add('cart-bounce');
+        }
+
+        function updateQty(id, change) {
+            const itemIndex = cart.findIndex(item => item.id === id);
+            if (itemIndex > -1) {
+                cart[itemIndex].qty += change;
+                if (cart[itemIndex].qty <= 0) cart.splice(itemIndex, 1);
+                updateCartUI();
+            }
+        }
+
+        function updateCartUI() {
+            const list = document.getElementById('cart-list');
+            const emptyMsg = document.getElementById('empty-cart-msg');
+            const totalEl = document.getElementById('cart-total');
+            const badges = [document.getElementById('cart-badge'), document.getElementById('mobile-cart-badge')];
+            const btnCheckout = document.getElementById('btn-checkout');
+            const checkoutForm = document.getElementById('checkout-form');
+
+            list.innerHTML = '';
+            let total = 0;
+            let totalItems = 0;
+
+            if (cart.length === 0) {
+                emptyMsg.style.display = 'block';
+                checkoutForm.classList.add('hidden'); // Sembunyikan form
+                btnCheckout.disabled = true;
+                btnCheckout.classList.add('opacity-50', 'cursor-not-allowed');
+                badges.forEach(b => b.classList.add('hidden'));
+            } else {
+                emptyMsg.style.display = 'none';
+                checkoutForm.classList.remove('hidden'); // Tampilkan form pemesan
+                btnCheckout.disabled = false;
+                btnCheckout.classList.remove('opacity-50', 'cursor-not-allowed');
+                
+                cart.forEach(item => {
+                    total += item.price * item.qty;
+                    totalItems += item.qty;
+                    list.innerHTML += `
+                    <div class="flex gap-3 bg-gray-50 p-3 rounded-xl border border-gray-100">
+                        <img src="http://hostgambar.vercel.app/image/${item.img}" class="w-16 h-16 object-cover rounded-lg shadow-sm">
+                        <div class="flex-1">
+                            <h4 class="font-semibold text-sm text-gray-800 line-clamp-1">${item.name}</h4>
+                            <p class="text-mustard-500 font-bold text-sm">${formatRp(item.price)}</p>
+                            <div class="flex items-center gap-3 mt-2">
+                                <button onclick="updateQty(${item.id}, -1)" class="w-6 h-6 rounded-full bg-white border border-gray-200 text-gray-600 flex items-center justify-center hover:bg-red-50 hover:text-red-600 hover:border-red-200 transition"><i class="fa-solid fa-minus text-[10px]"></i></button>
+                                <span class="text-sm font-medium w-4 text-center">${item.qty}</span>
+                                <button onclick="updateQty(${item.id}, 1)" class="w-6 h-6 rounded-full bg-white border border-gray-200 text-gray-600 flex items-center justify-center hover:bg-green-50 hover:text-green-600 hover:border-green-200 transition"><i class="fa-solid fa-plus text-[10px]"></i></button>
+                            </div>
+                        </div>
+                    </div>`;
+                });
+
+                badges.forEach(b => {
+                    b.classList.remove('hidden');
+                    b.textContent = totalItems;
+                });
+            }
+            totalEl.textContent = formatRp(total);
+        }
+
+        function toggleCart() {
+            document.getElementById('cart-sidebar').classList.toggle('open');
+            document.getElementById('cart-overlay').classList.toggle('open');
+        }
+
+        // Checkout via WA dari Keranjang + Form Data
+        function checkoutWA(e) {
+            e.preventDefault(); // Mencegah form reload page
+            
+            if (cart.length === 0) return;
+            
+            const nama = document.getElementById('cNama').value;
+            const meja = document.getElementById('cMeja').value;
+            const catatan = document.getElementById('cCatatan').value;
+            
+            let total = 0;
+            let msg = `Halo Wasle Cafe,%0ASaya ingin memesan menu (Pesanan Pintar):%0A%0A`;
+            
+            // Detail Pemesan
+            msg += `*Data Pemesan:*%0A`;
+            msg += `Nama : ${nama}%0A`;
+            msg += `Meja : ${meja}%0A`;
+            if(catatan) msg += `Catatan : ${catatan}%0A`;
+            msg += `%0A*Detail Pesanan:*%0A`;
+            
+            // Detail Item
+            cart.forEach(item => {
+                let sub = item.price * item.qty;
+                total += sub;
+                msg += `▪️ ${item.qty}x ${item.name} - ${formatRp(sub)}%0A`;
+            });
+            
+            msg += `%0A*Total Pembayaran : ${formatRp(total)}*%0A%0AMohon pesanan segera disiapkan. Terima kasih!`;
+            
+            window.open(`https://wa.me/628558000337?text=${msg}`, '_blank');
+            toggleCart(); // Tutup sidebar setelah pesan
+        }
+
+        // Form Reservasi Khusus WA
+        function kirimReservasiWA(e) {
             e.preventDefault();
             const notes = document.getElementById('rNotes').value;
-            let msg = `Halo Wasle,%0ASaya ingin melakukan reservasi meja dengan detail berikut:%0A%0ANama: ${document.getElementById('rNama').value}%0ATanggal: ${document.getElementById('rTgl').value}%0AJam: ${document.getElementById('rJam').value}%0AJumlah: ${document.getElementById('rPax').value}`;
+            let msg = `Halo Wasle,%0ASaya ingin *Reservasi Meja* dengan detail:%0A%0ANama: ${document.getElementById('rNama').value}%0ATanggal: ${document.getElementById('rTgl').value}%0AJam: ${document.getElementById('rJam').value}%0AJumlah: ${document.getElementById('rPax').value}`;
             if(notes) msg += `%0ACatatan: ${notes}`;
             window.open(`https://wa.me/628558000337?text=${msg}`, '_blank');
         }
